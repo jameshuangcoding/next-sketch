@@ -18,9 +18,11 @@ interface ComponentNameType {
   setComponentName: Dispatch<SetStateAction<string>>;
 }
 
+
 export const CodeContext = React.createContext<ComponentNameType | undefined>(
   undefined
 );
+
 
 const App = () => {
   const [elements, setElements] = useState<Tag[]>([
@@ -49,6 +51,7 @@ const App = () => {
 
   const [explorerData, setExplorerData] = useState(explorer);
   const [componentName, setComponentName] = useState<string>('App');
+  const [expand, setExpand] = useState<boolean>(false)
 
   const { insertNode, deleteNode, createCustomEndpoint, insertBoilerFiles } =
     useTraverseTree();
@@ -131,13 +134,18 @@ const App = () => {
                   handleCreateCustomEndpoint={handleCreateCustomEndpoint}
                   handleInputBoilerFiles={handleInputBoilerFiles}
                   explorer={explorerData}
+                  expand={expand}
+                  setExpand={setExpand}
                 />
                 <Folder
                   handleInsertNode={handleInsertNode}
                   handleDeleteNode={handleDeleteNode}
                   explorer={explorerData}
+                  expand={expand}
+                  setExpand={setExpand}
                 />
               </Grid>
+           
 
               <Grid item xs={4} sx={{ display: 'flex' }}>
                 <Grid alignSelf={'flex-start'}>

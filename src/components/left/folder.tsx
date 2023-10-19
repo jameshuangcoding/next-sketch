@@ -1,3 +1,4 @@
+import React, { useEffect, useState, useContext } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFolderPlus } from '@fortawesome/free-solid-svg-icons';
 import { faFileCirclePlus } from '@fortawesome/free-solid-svg-icons';
@@ -5,7 +6,8 @@ import { faFolderClosed } from '@fortawesome/free-solid-svg-icons';
 import { faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
-import DeleteIcon from '@mui/icons-material/Delete';
+
+
 
 
 interface Input {
@@ -13,12 +15,12 @@ interface Input {
     isFolder: boolean | null | undefined
 }
 
-import React, { useEffect, useState } from "react"
+
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
+function Folder({ handleInsertNode, handleDeleteNode, explorer, expand, setExpand }: any) {
     
-    const [expand, setExpand] = useState<boolean>(false);
+    // const [expand, setExpand] = useState(false);
     const [folderIcon, setFolderIcon] = useState<string>('▶');
     const [folderLogo, setFolderLogo] = useState(<FontAwesomeIcon icon={faFolderClosed}/>);
 

@@ -34,7 +34,7 @@ const style = {
   //MUI styling fior modal
 //-----------------
 
-const CustomEndpoint = ( {handleCreateCustomEndpoint, handleInputBoilerFiles, explorer}: any ) => {
+const CustomEndpoint = ( {handleCreateCustomEndpoint, handleInputBoilerFiles, explorer, expandState}: any ) => {
     
 const [inputValue, setInputValue] = useState("");
 const [open, setOpen] = useState(false);
@@ -94,6 +94,8 @@ function handleModalChange(e?: any){
             else {
                 alert('Please enter a file name')
             }
+
+            expandState(true)
     
     };
 
