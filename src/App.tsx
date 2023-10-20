@@ -23,6 +23,7 @@ export const CodeContext = React.createContext<ComponentNameType | undefined>(
 );
 
 const App = () => {
+
   const [elements, setElements] = useState<Tag[]>([
     { id: generateId(), name: 'div' },
     {
