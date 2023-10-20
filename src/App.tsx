@@ -24,6 +24,9 @@ export const CodeContext = React.createContext<ComponentNameType | undefined>(
 
 const App = () => {
 
+  const [expand, setExpand] = useState<boolean>(false);
+
+
   const [elements, setElements] = useState<Tag[]>([
     { id: generateId(), name: 'div' },
     {
@@ -137,6 +140,8 @@ const App = () => {
                   handleInsertNode={handleInsertNode}
                   handleDeleteNode={handleDeleteNode}
                   explorer={explorerData}
+                  expand={expand}
+                  setExpand={setExpand}
                 />
               </Grid>
 

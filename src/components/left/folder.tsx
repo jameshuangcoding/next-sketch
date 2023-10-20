@@ -16,9 +16,13 @@ interface Input {
 import React, { useEffect, useState } from "react"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
+function Folder({ handleInsertNode, handleDeleteNode, explorer, expand, setExpand }: any) {
 
-    const [expand, setExpand] = useState<boolean>(false);
+    const [isExpanded, setIsExpanded] = useState(false); // Local state for each folder
+    const handleToggleExpand = () => {
+        setIsExpanded(!isExpanded); // Toggle the expand state for this folder
+    };
+    // const [expand, setExpand] = useState<boolean>(false);
     const [folderIcon, setFolderIcon] = useState<string>('▶');
     const [folderLogo, setFolderLogo] = useState(<FontAwesomeIcon icon={faFolderClosed} />);
 
@@ -30,7 +34,8 @@ function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
 
     const handleNewFolder = (e?: React.MouseEvent, arg?: boolean) => {
         e?.stopPropagation();
-        setExpand(true)
+        // setExpand(true)
+        setIsExpanded(true)
         setFolderIcon('▼')
         setFolderLogo(<FontAwesomeIcon icon={faFolderOpen} />)
 
@@ -56,70 +61,67 @@ function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
 
     }
 
-
-
     if (explorer.isFolder) {
-        return <div style={{ marginTop: 5 }}>
+        return (
+            <div style={{ marginTop: 5 }}>
+                {/* <div className="folder" onClick={() => {
+                    if (!expand) {
+                        setFolderIcon('▼')
+                        setFolderLogo(<FontAwesomeIcon icon={faFolderOpen} />)
+                    }
+                    else {
+                        setFolderIcon('▶')
+                        setFolderLogo(<FontAwesomeIcon icon={faFolderClosed} />)
 
-
-
-
-            <div className="folder" onClick={() => {
-                if (!expand) {
-                    setFolderIcon('▼')
-                    setFolderLogo(<FontAwesomeIcon icon={faFolderOpen} />)
+                    }
+                    setExpand(!expand)
                 }
-                else {
-                    setFolderIcon('▶')
-                    setFolderLogo(<FontAwesomeIcon icon={faFolderClosed} />)
+                }> */}
+                <div className="folder" onClick={handleToggleExpand}>
 
-                }
-                setExpand(!expand)
-            }
-            }>
-
-                <span>{folderIcon} {folderLogo} {explorer.name} </span>
-
-                <div>
-                    <button onClick={(e) => handleNewFolder(e, true)}> <FontAwesomeIcon icon={faFolderPlus} />  </button>
-                    <button onClick={(e) => handleNewFolder(e, false)}> <FontAwesomeIcon icon={faFileCirclePlus} /> </button>
-                    <button onClick={(e) => handleDeleteFolder(e, false)}> <FontAwesomeIcon icon={faTrash} /> </button>
-
+                    <span>{folderIcon} {folderLogo} {explorer.name} </span>
+                    <div>
+                        <button onClick={(e) => handleNewFolder(e, true)}> <FontAwesomeIcon icon={faFolderPlus} />  </button>
+                        <button onClick={(e) => handleNewFolder(e, false)}> <FontAwesomeIcon icon={faFileCirclePlus} /> </button>
+                        <button onClick={(e) => handleDeleteFolder(e, false)}> <FontAwesomeIcon icon={faTrash} /> </button>
+                    </div>
                 </div>
 
-            </div>
+                <div style={{ display: isExpanded ? "block" : "none", paddingLeft: 25 }}>
+                    {
+                        showInput.visible && (
+                            <div className='inputContainer'>
+                                <span>{showInput.isFolder ? " 📁" : "📄"}</span>
+                                <input
+                                    type="text"
+                                    onKeyDown={onAddFolder}
+                                    className="inputContainer__input"
+                                    autoFocus
+                                    onBlur={() => {
+                                        setShowInput({ ...showInput, visible: false })
+                                        setFolderIcon('▶')
+                                        setFolderLogo(<FontAwesomeIcon icon={faFolderClosed} />)
+                                        setExpand(false)
+                                    }}
+                                />
+                            </div>
+                        )
+                    }
 
-            <div style={{ display: expand ? "block" : "none", paddingLeft: 25 }}>
-                {
-                    showInput.visible && (
-                        <div className='inputContainer'>
-                            <span>{showInput.isFolder ? " 📁" : "📄"}</span>
-                            <input
-                                type="text"
-                                onKeyDown={onAddFolder}
-                                className="inputContainer__input"
-                                autoFocus
-                                onBlur={() => {
-                                    setShowInput({ ...showInput, visible: false })
-                                    setFolderIcon('▶')
-                                    setFolderLogo(<FontAwesomeIcon icon={faFolderClosed} />)
-                                    setExpand(false)
-                                }}
-                            />
-                        </div>
-                    )
-                }
-
-                {explorer.items.map((exp: any) => {
-                    return <Folder
-                        handleInsertNode={handleInsertNode}
-                        handleDeleteNode={handleDeleteNode}
-                        explorer={exp}
-                        key={exp.id}
-                    />
-                })}
+                    {explorer.items.map((exp: any) => {
+                        return <Folder
+                            handleInsertNode={handleInsertNode}
+                            handleDeleteNode={handleDeleteNode}
+                            explorer={exp}
+                            key={exp.id}
+                            expand={expand}
+                            setExpand={setExpand}
+                            isExpanded={isExpanded}
+                        />
+                    })}
+                </div>
             </div>
-        </div>
+        );
     } else {
         return (
 
@@ -134,3 +136,5 @@ function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
 }
 
 export default Folder;
+
+
