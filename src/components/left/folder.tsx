@@ -16,11 +16,16 @@ interface Input {
 import React, { useEffect, useState } from "react"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
-    
-    const [expand, setExpand] = useState<boolean>(false);
+function Folder({ handleInsertNode, handleDeleteNode, explorer, folderExpanded, setFolderExpanded }: any) {
+
+    // const [expand, setExpand] = useState<boolean>(false);
+    const [expand, setExpand] = useState<boolean>(folderExpanded);
+    // console.log('expand within top of folder', expand)
+    // console.log('fodlerExpanded within top of folder', folderExpanded)
+    // setExpand(folderExpanded);
+    // console.log('expandafter setter', expand)
     const [folderIcon, setFolderIcon] = useState<string>('▶');
-    const [folderLogo, setFolderLogo] = useState(<FontAwesomeIcon icon={faFolderClosed}/>);
+    const [folderLogo, setFolderLogo] = useState(<FontAwesomeIcon icon={faFolderClosed} />);
 
 
     const [showInput, setShowInput] = useState<Input>({
@@ -32,8 +37,8 @@ function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
         e?.stopPropagation();
         setExpand(true)
         setFolderIcon('▼')
-        setFolderLogo(<FontAwesomeIcon icon={faFolderOpen}/>)
-        
+        setFolderLogo(<FontAwesomeIcon icon={faFolderOpen} />)
+
         setShowInput({
             visible: true,
             isFolder: arg,
@@ -53,34 +58,34 @@ function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
         e?.stopPropagation();
         handleDeleteNode(explorer.id)
 
-       await fetch('http://localhost:3000/', {
+        await fetch('http://localhost:3000/', {
             method: "Delete",
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({"name": explorer.name})
+            body: JSON.stringify({ "name": explorer.name })
         })
 
         setShowInput({ ...showInput, visible: false })
 
     }
 
-   
+
 
     if (explorer.isFolder) {
         return <div style={{ marginTop: 5 }}>
 
-        
+
 
 
             <div className="folder" onClick={() => {
                 if (!expand) {
                     setFolderIcon('▼')
-                    setFolderLogo(<FontAwesomeIcon icon={faFolderOpen}/>)
+                    setFolderLogo(<FontAwesomeIcon icon={faFolderOpen} />)
                 }
                 else {
                     setFolderIcon('▶')
-                    setFolderLogo(<FontAwesomeIcon icon={faFolderClosed}/>)
+                    setFolderLogo(<FontAwesomeIcon icon={faFolderClosed} />)
 
                 }
                 setExpand(!expand)
@@ -90,9 +95,9 @@ function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
                 <span>{folderIcon} {folderLogo} {explorer.name} </span>
 
                 <div>
-                    <button onClick={(e) => handleNewFolder(e, true)}> <FontAwesomeIcon icon = {faFolderPlus}/>  </button>
-                    <button onClick={(e) => handleNewFolder(e, false)}> <FontAwesomeIcon icon = {faFileCirclePlus} /> </button>
-                    <button onClick={(e) => handleDeleteFolder(e, false)}> <FontAwesomeIcon icon ={faTrash}/> </button>
+                    <button onClick={(e) => handleNewFolder(e, true)}> <FontAwesomeIcon icon={faFolderPlus} />  </button>
+                    <button onClick={(e) => handleNewFolder(e, false)}> <FontAwesomeIcon icon={faFileCirclePlus} /> </button>
+                    <button onClick={(e) => handleDeleteFolder(e, false)}> <FontAwesomeIcon icon={faTrash} /> </button>
 
                 </div>
 
@@ -110,8 +115,8 @@ function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
                                 autoFocus
                                 onBlur={() => {
                                     setShowInput({ ...showInput, visible: false })
-                                    setFolderIcon('▶')  
-                                    setFolderLogo(<FontAwesomeIcon icon={faFolderClosed}/>)
+                                    setFolderIcon('▶')
+                                    setFolderLogo(<FontAwesomeIcon icon={faFolderClosed} />)
                                     setExpand(false)
                                 }}
                             />
@@ -120,19 +125,28 @@ function Folder({ handleInsertNode, handleDeleteNode, explorer }: any) {
                 }
 
                 {explorer.items.map((exp: any) => {
-                    return <Folder handleInsertNode={handleInsertNode} handleDeleteNode ={handleDeleteNode} explorer={exp} key={exp.id} />
+                    return <Folder
+                        handleInsertNode={handleInsertNode}
+                        handleDeleteNode={handleDeleteNode}
+                        explorer={exp}
+                        key={exp.id}
+                        expand={expand}
+                        setExpand={setExpand}
+                    // folderExpanded={folderExpanded}
+                    // setFolderExpanded={setFolderExpanded}
+                    />
                 })}
             </div>
         </div>
     } else {
         return (
-        
-        <div className = 'folder'>
-        
-        📄 {explorer.name} <button onClick={(e) => handleDeleteFolder(e, false)}> <FontAwesomeIcon icon ={faTrash}/> </button>
 
-       
-        </div>
+            <div className='folder'>
+
+                📄 {explorer.name} <button onClick={(e) => handleDeleteFolder(e, false)}> <FontAwesomeIcon icon={faTrash} /> </button>
+
+
+            </div>
         )
     }
 }

@@ -20,28 +20,28 @@ const useTraverseTree = () => {
         return { ...tree, items: latestNode };
     }
 
-    const deleteNode = (tree:any, folderId: Number) => {
-      
+    const deleteNode = (tree: any, folderId: Number) => {
 
 
-         const items = tree.items.filter((ob: any) => {
-                return ob.id !== folderId
-            })
-    
-    
-            if (items.length === tree.items.length) {
-                const temp = tree.items.map((obj) => deleteNode(obj, folderId));
-                return { ...tree, items: temp };
-              }
+
+        const items = tree.items.filter((ob: any) => {
+            return ob.id !== folderId
+        })
+
+
+        if (items.length === tree.items.length) {
+            const temp = tree.items.map((obj) => deleteNode(obj, folderId));
+            return { ...tree, items: temp };
+        }
 
         return { ...tree, items: items };
     }
 
-    const createCustomEndpoint = (tree: any, folderId: number, item: string, isFolder: boolean ) => {
-       let fileAlreadyExists = false;
+    const createCustomEndpoint = (tree: any, folderId: number, item: string, isFolder: boolean, open: boolean, setOpen: any) => {
+        let fileAlreadyExists = false;
 
 
-       //loop through files of source folder and make sure there are not 2 folders with the same name
+        //loop through files of source folder and make sure there are not 2 folders with the same name
         // for(const folder of tree.items) {
         //     if(folder.name === 'src') {
 
@@ -58,7 +58,7 @@ const useTraverseTree = () => {
         //             name: item,
         //             isFolder: true,
         //             items: []})
-                
+
         //         }
         //     }
         // }
@@ -67,25 +67,26 @@ const useTraverseTree = () => {
 
             console.log(tree.items)
 
-            for(const files of tree.items){
-                    if(files.name === item) {
-                            alert('Folder name already exists!')
-                                fileAlreadyExists = true
-                        }
-                    }
+            for (const files of tree.items) {
+                if (files.name === item) {
+                    alert('Folder name already exists!')
+                    fileAlreadyExists = true
+                    return setOpen(false);
+                }
+            }
 
 
-        if(fileAlreadyExists === false){
-            tree.items.unshift({
-                id: new Date().getTime(),
-                name: item,
-                isFolder: true,
-                items: []
+            if (fileAlreadyExists === false) {
+                tree.items.unshift({
+                    id: new Date().getTime(),
+                    name: item,
+                    isFolder: true,
+                    items: []
 
-            });
-            return tree;
+                });
+                return tree;
+            }
         }
-    }
 
         let latestNode = [];
         latestNode = tree.items.map((ob: object) => {
@@ -99,7 +100,7 @@ const useTraverseTree = () => {
     }
 
     function insertBoilerFiles(tree: any, folderId: number, item: string, folderName: string) {
-      
+
 
 
         if (tree.name === folderName) {
