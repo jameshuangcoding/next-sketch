@@ -253,6 +253,7 @@ const DisplayContainer = () => {
           ref={setNodeRef}
         >
           {/* drop here text */}
+          {/* adding test comment */}
           {!isOver && tags.length === 0 && (
             <Box
               sx={{
