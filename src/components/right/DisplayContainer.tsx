@@ -33,8 +33,9 @@ import { CodeSnippetContext } from '../../App';
  * @children - SortableContainer.tsx, SortableItem.tsx
  */
 
-const DisplayContainer = ({handleUpdatePreview, explorer}) => {
-  const { tags, setTags, currentId, update, setUpdate } = useContext(AppContext);
+const DisplayContainer = ({ handleUpdatePreview, explorer }) => {
+  const { tags, setTags, currentId, update, setUpdate, postData, setPostData } =
+    useContext(AppContext);
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
 
@@ -65,13 +66,10 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
         };
         await setTags([...tags, newTag]);
       }
-
-      setUpdate(true)
-
-    }
+      setPostData(true);
+      setUpdate(true);
+    },
   });
-
-
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -108,7 +106,6 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
     });
   };
 
-
   /**
    * @method getTagIds
    * @description - maps through the array returned by getTags
@@ -119,7 +116,6 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
   const getTagIds = (parent?: UniqueIdentifier) => {
     return getTags(parent).map((tag) => tag.id);
   };
-
 
   const findParent = (id: UniqueIdentifier) => {
     const tag = tags.find((tag) => tag.id === id);

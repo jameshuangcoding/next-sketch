@@ -9,56 +9,56 @@ const explorer = {
       isFolder: true,
       items: [
         {
-        id:'23',
-        name: 'yaml',
-        isFolder: true,
-        items: [
-          {
-            id: '124314',
-            name: 'These files will be available for view in your Export!',
-            isFolder: false,
-            items: []
-          }
-        ],
-      },
-      {
-        id: '24',
-        name: 'yocto-queue',
-        isFolder: true,
-        items: [
-          {
-          id:'111',
-          name: 'index.d.ts',
-          isFolder: false,
-          items:[]
+          id: '23',
+          name: 'yaml',
+          isFolder: true,
+          items: [
+            {
+              id: '124314',
+              name: 'These files will be available for view in your Export!',
+              isFolder: false,
+              items: [],
+            },
+          ],
         },
-      {
-        id:'112',
-        name: 'index.js',
-        isFolder: false,
-        items:[]
-      },
-      {
-        id:'113',
-        name: 'license',
-        isFolder: false,
-        items:[]
-      },
         {
-        id:'114',
-        name: 'package.json',
-        isFolder: false,
-        items:[]
-      },
-      {
-        id:'115',
-        name: 'readme.md',
-        isFolder: false,
-        items:[]
-      }
-    ]
-      }
-    ],
+          id: '24',
+          name: 'yocto-queue',
+          isFolder: true,
+          items: [
+            {
+              id: '111',
+              name: 'index.d.ts',
+              isFolder: false,
+              items: [],
+            },
+            {
+              id: '112',
+              name: 'index.js',
+              isFolder: false,
+              items: [],
+            },
+            {
+              id: '113',
+              name: 'license',
+              isFolder: false,
+              items: [],
+            },
+            {
+              id: '114',
+              name: 'package.json',
+              isFolder: false,
+              items: [],
+            },
+            {
+              id: '115',
+              name: 'readme.md',
+              isFolder: false,
+              items: [],
+            },
+          ],
+        },
+      ],
     },
     {
       id: '3',
@@ -69,13 +69,13 @@ const explorer = {
           id: '3.33',
           name: 'next.svg',
           isFolder: false,
-          items: []
+          items: [],
         },
         {
           id: '3.66',
           name: 'vercel.svg',
           isFolder: false,
-          items: []
+          items: [],
         },
       ],
     },
@@ -107,9 +107,7 @@ const explorer = {
               isFolder: false,
               items: [],
               preview: `
-import React from 'react';
-  
-  const Layout = () => {
+const Layout = () => {
     return (
       <>
         {/* Your page content goes here */}
@@ -126,9 +124,7 @@ import React from 'react';
               isFolder: false,
               items: [],
               preview: `
-import React from 'react';
-  
-  const Page = () => {
+const Page = () => {
     return (
       <>
         {/* Your page content goes here */}
@@ -136,7 +132,7 @@ import React from 'react';
     );
   };
   
-  export default Page;
+export default Page;
               `,
             },
           ],

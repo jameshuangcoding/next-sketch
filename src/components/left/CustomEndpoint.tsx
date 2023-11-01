@@ -28,21 +28,31 @@ const CustomEndpoint = ({
   handleCreateCustomEndpoint,
   handleInputBoilerFiles,
   handleUpdatePreview,
+  handleUpdateInitialPreview,
   explorer,
   setFolder,
   folder,
   setFile,
   file,
-  setPostData,
-  postData,
 }: any) => {
   // const [folder, setFolder] = useState('');
   // const [file, setFile] = useState('');
   const [open, setOpen] = useState(false);
   const [componentName, setComponentName] = useContext(CodeContext);
   const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
-  const {tags, setTags, update, setUpdate, currentId, previewFolder, setPreviewFolder} = useContext(AppContext);
+  const [initialFolder, setInitialFolder] = useState('');
 
+  const {
+    tags,
+    setTags,
+    update,
+    setUpdate,
+    currentId,
+    previewFolder,
+    setPreviewFolder,
+    postData,
+    setPostData,
+  } = useContext(AppContext);
 
   //deconstructing the reducer elements
   // const { componentName, updateComponent } = useCode();
@@ -75,25 +85,30 @@ const CustomEndpoint = ({
 
   function handleChange(e?: any) {
     setFolder(e.target.value);
-    setPreviewFolder(e.target.value)
+    setPreviewFolder(e.target.value);
   }
 
-
   useEffect(() => {
-
     //creating new files with code
     if (postData === true) {
-      console.log('posting data')
+      console.log('posting data');
+      console.log(initialFolder);
+      // handleUpdateInitialPreview(
+      //   initialFolder,
+      //   componentName,
+      //   codeSnippet,
+      //   tags
+      // );
       handlePostingFiles(folder, componentName, codeSnippet);
     }
-    console.log('in useeffect customendpoiunt')
+
     //updating code in existing files
     if (update === true) {
       handleUpdatingFiles(componentName, codeSnippet, previewFolder);
 
       handleUpdatePreview(currentId, codeSnippet, tags);
 
-      setUpdate(false)
+      setUpdate(false);
     }
     Prism.highlightAll();
   }, [codeSnippet]);
@@ -132,25 +147,33 @@ const CustomEndpoint = ({
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
-    });
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // setInitialFolder(data[0]);
+        // setCodeSnippet(data[2]);
+        // handleUpdateInitialPreview(data[0], data[1], data[2], tags);
+      });
   };
 
-  const handleUpdatingFiles = async (file: string, code: string, previewFolder) => {
-
-
+  const handleUpdatingFiles = async (
+    file: string,
+    code: string,
+    previewFolder
+  ) => {
     const body = {
       fileName: file,
       codeSnippet: code,
       folder: previewFolder,
-    }
+    };
     await fetch('http://localhost:3000/updatecode', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(body)
-  })
-  }
+      body: JSON.stringify(body),
+    });
+  };
 
   const handleCreateCustomFolder = async (e?: React.MouseEvent) => {
     e?.stopPropagation();

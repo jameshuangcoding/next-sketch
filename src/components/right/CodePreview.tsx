@@ -26,7 +26,6 @@ const CodePreview = ({ treeData }: CodePreviewProps) => {
     useContext(AppContext);
 
   useEffect(() => {
-    console.log('inside codepreview useefffect');
     if (reset === true) {
       setReset(false);
       return;
@@ -123,10 +122,7 @@ const CodePreview = ({ treeData }: CodePreviewProps) => {
 
     let codeSnippet = '';
     if (name === 'NotFound') {
-      codeSnippet = `
-  import React from 'react';
-  
-  const ${name} = () => {
+      codeSnippet = `const ${name} = () => {
     return (
       <div>
         <h1>404 - Page Not Found</h1>
@@ -138,9 +134,7 @@ const CodePreview = ({ treeData }: CodePreviewProps) => {
   export default ${name};
   `;
     } else {
-      codeSnippet = `import React from 'react';
-  
-  const ${name} = () => {
+      codeSnippet = `const ${name} = () => {
     return (
       <>
         ${additional}

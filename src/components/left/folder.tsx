@@ -39,8 +39,6 @@ function Folder({
   folder,
   setFile,
   file,
-  setPostData,
-  postData,
 }: any) {
   const [folderIcon, setFolderIcon] = useState<string>('▶');
   const [folderLogo, setFolderLogo] = useState(
@@ -58,6 +56,8 @@ function Folder({
     setReset,
     previewFolder,
     setPreviewFolder,
+    postData,
+    setPostData,
   } = useContext(AppContext);
   const [open, setOpen] = useState(false);
   const [expand, setExpand] = useState(false);
@@ -111,6 +111,8 @@ function Folder({
     setExpand(true);
     setFolderIcon('▼');
     setFolderLogo(<FontAwesomeIcon icon={faFolderOpen} />);
+
+    console.log(explorer);
 
     setShowInput({
       visible: true,
