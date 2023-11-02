@@ -158,18 +158,21 @@ export default ${name};
     <>
       <Box
         sx={{
-          border: 2,
-          borderColor: 'darkgreen',
+          // border: 2,
+          // borderColor: 'darkgreen',
+          borderRadius: '20px',
+          boxShadow: '-1px 1px 18px 0px rgba(0,0,0,0.75)',
           flexGrow: 1,
           paddingLeft: 2,
           paddingRight: 2,
+          bgcolor: 'white',
         }}
       >
         <Typography variant='h6'>Code Preview</Typography>
         <Box
           sx={{
-            border: 2,
-            borderColor: 'darkred',
+            // border: 2,
+            // borderColor: 'darkred',
             height: '35vh',
             overflow: 'auto',
             scrollbarWidth: 'none', // Hide the scrollbar for firefox
@@ -181,7 +184,10 @@ export default ${name};
             },
           }}
         >
-          <pre className='line-numbers' style={{ height: '100%' }}>
+          <pre
+            className='line-numbers'
+            style={{ height: '90%', fontSize: '15px' }}
+          >
             <code className='language-jsx match-braces'>{codeSnippet}</code>
           </pre>
         </Box>
