@@ -10,7 +10,11 @@ const fileController = require('./fileController.js');
 const archiver = require('archiver');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static('./dist'));
+app.use(express.static('./public'));
+
+app.get('/', (req, res) => {
+  res.sendFile('index.html', {root: path.join(__dirname, 'public')});
+});
 
 app.get('/export', (req, res) => {
   const folderPath = 'server/ExportFolder/NextSketch'; // Replace with the actual folder path
