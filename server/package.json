@@ -1,0 +1,11 @@
+{
+  "name": "server",
+  "public": true,
+  "version": "0.0.0",
+  "scripts": {
+    "start": "node server/server.js"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}
