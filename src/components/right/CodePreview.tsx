@@ -181,11 +181,8 @@ export default ${name};
             },
           }}
         >
-          <pre className='line-numbers'>
+          <pre className='line-numbers' style={{ height: '100%' }}>
             <code className='language-jsx match-braces'>{codeSnippet}</code>
-          </pre>
-          <pre className='line-numbers'>
-            {/* <code className='language-html line-numbers'>{additional}</code> */}
           </pre>
         </Box>
       </Box>
