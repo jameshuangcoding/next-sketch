@@ -11,7 +11,7 @@ const archiver = require('archiver');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../dist/')));
+app.use(express.static(path.join(__dirname, './dist')));
 
 app.get('/hello', (req,res) => {
   return res.status(200).send('hello');
