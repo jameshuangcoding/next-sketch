@@ -158,22 +158,26 @@ export default ${name};
     <>
       <Box
         sx={{
+<<<<<<< HEAD
           // border: 2,
           // borderColor: 'darkgreen',
+=======
+>>>>>>> c7f5f1261d6963536ea5942910c753188bf09866
           borderRadius: '20px',
           boxShadow: '-1px 1px 18px 0px rgba(0,0,0,0.75)',
-          flexGrow: 1,
           paddingLeft: 2,
           paddingRight: 2,
-          bgcolor: 'white',
+          bgcolor: 'rgba(229, 63, 115)',
+          height: '100%',
+
         }}
       >
-        <Typography variant='h6'>Code Preview</Typography>
+        <Typography variant='h6' style={{color: 'white', fontSize: '1.8rem', paddingTop: '1.5%', paddingLeft:'1%'}}>Code Preview</Typography>
         <Box
           sx={{
             // border: 2,
-            // borderColor: 'darkred',
-            height: '35vh',
+            // borderColor: 'darkred'
+            height: '90%',
             overflow: 'auto',
             scrollbarWidth: 'none', // Hide the scrollbar for firefox
             '&::-webkit-scrollbar': {
@@ -182,12 +186,24 @@ export default ${name};
             '&-ms-overflow-style:': {
               display: 'none', // Hide the scrollbar for IE
             },
+<<<<<<< HEAD
           }}
         >
           <pre
             className='line-numbers'
             style={{ height: '90%', fontSize: '15px' }}
           >
+=======
+            fontSize: '20px',
+            '@media (min-width: 2000px)': {
+              /* CSS styles to apply when the screen is larger than 2000px */
+              fontSize: '30px',
+            },
+            
+          }}
+        >
+          <pre className='line-numbers' style={{height: '100%'}}>
+>>>>>>> c7f5f1261d6963536ea5942910c753188bf09866
             <code className='language-jsx match-braces'>{codeSnippet}</code>
           </pre>
         </Box>

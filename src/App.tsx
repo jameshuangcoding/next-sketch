@@ -24,6 +24,7 @@ import Tree from './components/right/Tree';
 import CodePreview from './components/right/CodePreview';
 import { DndContext } from '@dnd-kit/core';
 import DragOverlayWrapper from './components/middle/DragOverlayWrapper';
+import { image } from 'd3';
 
 // test
 
@@ -171,42 +172,34 @@ const App = () => {
   };
 
   return (
-    <Box sx={{ height: '100vh' }}>
-      <AppBar
-        position='static'
-        sx={{
-          bgcolor: 'transparent',
-          marginBottom: '1.3%',
-          boxShadow: ' -1px 6px 11px 0px rgba(131,99,151,0.75)',
-        }}
-      >
+    <Box>
+      <AppBar position='static' sx={{ bgcolor: 'transparent', marginBottom: '2%' }}>
         <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ display: 'flex' }}>
-            <img
-              src='src/images/logo2.png'
-              style={{ width: '10%', alignSelf: 'center' }}
-            />
+          <div style={{display: 'flex' }}>
+          <img src='images/logo2.png'     style={{ width: '10%', alignSelf:'center'}}/>
 
-            <Typography
-              variant='h3'
-              sx={{
-                fontFamily: 'Titillium Web',
-                // marginBottom: '0.5em',
-                color: 'white',
-                textShadow: '2px 2px 4px rgba(255, 255, 255, 0.5)', // Adjust shadow values as needed
-                alignSelf: 'center',
-              }}
-            >
-              NextSketch
-            </Typography>
+          <Typography
+            variant='h3'
+            sx={{
+            fontFamily: 'Titillium Web',
+            // marginBottom: '0.5em',
+            color: 'white',
+            textShadow: '2px 2px 4px rgba(255, 255, 255, 0.5)', // Adjust shadow values as needed
+            alignSelf:'center'
+            }}
+          >
+  
+          NextSketch
+          </Typography>
           </div>
 
           <ExportButton />
         </Toolbar>
       </AppBar>
 
-      <Box
+      {/* <Box
         sx={{
+        
           height: '88vh',
           width: '95vw',
           marginLeft: 5,
@@ -219,11 +212,11 @@ const App = () => {
           // boxShadow: '7px 12px 49px -14px rgba(255,255,255,1)',
           boxShadow: '-1px 3px 22px 0px rgba(131,99,151,0.75)',
           backgroundColor: 'white',
-          paddingTop: '1%',
+          paddingTop: '1%'
           // border: 2,
           // borderColor: 'red',
         }}
-      >
+      > 
         <CodeContext.Provider value={[componentName, setComponentName]}>
           <CodeSnippetContext.Provider value={[codeSnippet, setCodeSnippet]}>
             <AppContext.Provider
@@ -245,10 +238,11 @@ const App = () => {
               <Grid
                 container
                 sx={{
-                  height: '',
+                  height: '85vh',
+                  paddingLeft: '1.3%',
                   // border: 2,
                   // borderColor: 'blue',
-                  gap: '15px',
+                  gap: '30px'
                 }}
               >
                 <Grid
@@ -258,7 +252,7 @@ const App = () => {
                   lg={3}
                   xl={2.5}
                   sx={{
-                    maxHeight: '86vh',
+                    maxHeight: '100%',
                     // border: 2,
                     // borderColor: 'pink',
                     paddingLeft: 1,
@@ -315,20 +309,26 @@ const App = () => {
                       // border: 2,
                       // borderColor: 'black',
                       display: 'flex',
-                      gap: '15px',
+                      gap: '30px',
                       flexDirection: 'column',
                       justifyContent: 'space-between',
+                  
                     }}
-                  >
-                    <StaticTagsContainer />
+                  > 
+                    <Box style={{alignSelf: 'flex-start', height: '40vh'}}>
+                      <StaticTagsContainer />
+                    </Box>
+                    
                     <Box
                       sx={{
                         // border: 1,
                         // borderColor: 'lawngreen',
-                        flexGrow: 1,
-                        background: '#42464C',
+                        // flexGrow: 1,
+                        height: '45vh',
+                        background: 'transparent',
                         boxShadow: '-1px 1px 18px 0px rgba(0,0,0,0.75)',
                         borderRadius: '20px',
+                    
                       }}
                     >
                       <Tree explorer={explorerData} srcApp={srcApp} />
@@ -343,23 +343,27 @@ const App = () => {
                     xl={4.5}
                     sx={{
                       justifyContent: 'space-between',
+                      maxHeight: '100%',
                       display: 'flex',
                       flexDirection: 'column',
                       // border: 2,
-                      gap: '15px',
+                      gap: '30px',
                       // borderColor: 'cyan',
+                      
                     }}
                   >
                     <Box
                       sx={{
                         width: '100%',
                         height: '35vh',
+                        // height: '400px',
                         // border: 2,
                         // borderColor: 'orange',
                         paddingLeft: 2,
                         paddingRight: 2,
                         boxShadow: '-1px 1px 18px 0px rgba(0,0,0,0.75)',
                         borderRadius: '20px',
+                        
                       }}
                     >
                       <DisplayContainer
@@ -367,7 +371,11 @@ const App = () => {
                         handleUpdatePreview={handleUpdatePreview}
                       />
                     </Box>
+
+                    <Box sx={{height: '45vh'}}>
                     <CodePreview treeData={explorerData} />
+                    </Box>
+                    
                   </Grid>
                   <DragOverlayWrapper />
                 </DndContext>
@@ -376,7 +384,7 @@ const App = () => {
           </CodeSnippetContext.Provider>
         </CodeContext.Provider>
       </Box>
-    </Box>
+    // </Box>
   );
 };
 
