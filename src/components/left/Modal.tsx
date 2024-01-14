@@ -9,8 +9,6 @@ import { useState } from 'react';
 const Modals = ({open, handleModalChange}: any) => {
 //refactoring
 
-    console.log('in modals', open)
-
     const style = {
         position: 'absolute' as 'absolute',
         top: '50%',
