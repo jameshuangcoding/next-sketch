@@ -25,6 +25,7 @@ import CodePreview from './components/right/CodePreview';
 import { DndContext } from '@dnd-kit/core';
 import DragOverlayWrapper from './components/middle/DragOverlayWrapper';
 import { image } from 'd3';
+import Modals from './components/left/Modal';
 
 // test
 
@@ -295,6 +296,7 @@ const App = () => {
                     file={file}
                     setPostData={setPostData}
                     postData={postData}
+                    Modals = {<Modals />}
                   />
                 </Grid>
 
@@ -367,6 +369,7 @@ const App = () => {
                         explorer={explorerData}
                         handleUpdatePreview={handleUpdatePreview}
                       />
+                      
                     </Box>
 
                     <Box sx={{height: '45vh'}}>

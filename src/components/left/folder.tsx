@@ -24,7 +24,8 @@ import { modalLayout } from '../../utils/interfaces';
 import { app } from 'electron';
 import { file } from 'jszip';
 import Tree from '../right/Tree';
-
+import Modals from './Modal';
+import Test from './test';
 interface Input {
   visible: boolean | undefined;
   isFolder: boolean | null | undefined;
@@ -42,6 +43,7 @@ function Folder({
   file,
   setPostData,
   postData,
+  Modals
 }: any) {
   const [folderIcon, setFolderIcon] = useState<string>('▶');
   const [folderLogo, setFolderLogo] = useState(
@@ -122,7 +124,6 @@ function Folder({
     });
 
     if (arg === false) {
-      console.log(e.target);
       setComponentName();
     }
   };
@@ -194,7 +195,10 @@ function Folder({
 
       setShowInput({ ...showInput, visible: false });
 
-      if (showInput.isFolder) setOpen(true);
+      if (showInput.isFolder){
+        setOpen(true)
+        return <Modals />
+      }
     }
   };
 
@@ -218,7 +222,7 @@ function Folder({
   if (explorer.isFolder) {
     return (
       <div style={{ marginTop: 5 }}>
-        <Modal
+        {/* <Modal
           open={open}
           aria-labelledby='modal-title'
           aria-describedby='modal-description'
@@ -305,7 +309,7 @@ function Folder({
               Submit
             </Button>
           </Box>
-        </Modal>
+        </Modal> */}
         <div
           className='folder'
           onClick={() => {
@@ -399,6 +403,7 @@ function Folder({
                 file={file}
                 setPostData={setPostData}
                 postData={postData}
+                Modals={Modals}
               />
             );
           })}
