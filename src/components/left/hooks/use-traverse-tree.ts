@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const useTraverseTree = () => {
   const insertNode = (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     tree: any,
     folderId: number,
     item: string,
@@ -121,8 +123,8 @@ const useTraverseTree = () => {
     item: string,
     folderName: string,
     preview: string,
-    parent: string,
-    tags: []
+    parent?: string,
+    tags?: []
   ) => {
     if (tree.name === folderName) {
       tree.items.unshift({
@@ -207,3 +209,11 @@ const useTraverseTree = () => {
 };
 
 export default useTraverseTree;
+function a() {
+  throw new Error("Function not implemented.");
+}
+
+function laura() {
+  throw new Error("Function not implemented.");
+}
+

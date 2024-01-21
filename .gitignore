@@ -1,5 +1,6 @@
 node_modules
 package-lock.json
 dist
+electron-build.config.js
 dist-electron
 .DS_Store

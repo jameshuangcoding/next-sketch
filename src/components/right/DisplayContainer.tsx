@@ -1,17 +1,15 @@
 import { Box, Typography } from '@mui/material';
 import {
   DragEndEvent,
-  UniqueIdentifier,
   useDndMonitor,
   useDroppable,
 } from '@dnd-kit/core';
-import { useContext, useState } from 'react';
+import { useContext} from 'react';
 import AppContext from '../../context/AppContext';
 import { Tag } from '../../utils/interfaces';
 import { TestItem } from './TestItem';
 import { TestContainer } from './TestContainer';
 
-import { CodeSnippetContext } from '../../App';
 
 /**
  * @description - container for displayed tag elements
@@ -19,12 +17,10 @@ import { CodeSnippetContext } from '../../App';
  * @children - SortableContainer.tsx, SortableItem.tsx
  */
 
-const DisplayContainer = ({handleUpdatePreview, explorer}) => {
-  const { tags, setTags, currentId, update, setUpdate } = useContext(AppContext);
-  const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
+const DisplayContainer = () => {
+  const { tags, setTags, setUpdate } = useContext(AppContext);
 
   const tagsWithoutParents = tags.filter((prev) => !prev.parent);
-  const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
 
   const { setNodeRef, isOver } = useDroppable({
     id: 'display-container-drop-area',
@@ -32,7 +28,6 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
       isDisplayContainerDropArea: true,
     },
   });
-
 
   useDndMonitor({
     // onDragOver: (event: DragOverEvent) => {
@@ -197,11 +192,15 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
   });
 
   return (
-    <Box style={{color: 'rgba(101,105,111)'}}>
-      <Typography variant='h6' style={{fontSize: '2rem', paddingTop: '1.5%', paddingLeft:'1%'}}>My Page</Typography>
+    <Box style={{ color: 'rgba(101,105,111)' }}>
+      <Typography
+        variant='h6'
+        style={{ fontSize: '2rem', paddingTop: '1.5%', paddingLeft: '1%' }}
+      >
+        My Page
+      </Typography>
       <Box
         sx={{
-          
           ...(isOver && {
             borderColor: 'red',
           }),
