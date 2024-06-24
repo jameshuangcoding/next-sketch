@@ -15,7 +15,7 @@ import useTraverseTree from './components/left/hooks/use-traverse-tree';
 import CustomEndpoint from './components/left/CustomEndpoint';
 import TabsComponent from './components/right/TabsComponent';
 import DisplayContainer from './components/right/DisplayContainer';
-import { Tag, Elements } from './utils/interfaces';
+import { Tag, Elements, ComponentNameType, CodeSnippetType } from './utils/interfaces';
 import { generateId } from './utils/generateId';
 import WebFont from 'webfontloader';
 import ExportButton from './components/right/ExportButton';
@@ -24,18 +24,11 @@ import Tree from './components/right/Tree';
 import CodePreview from './components/right/CodePreview';
 import { DndContext } from '@dnd-kit/core';
 import DragOverlayWrapper from './components/middle/DragOverlayWrapper';
+import { image } from 'd3';
 
 // test
 
-interface ComponentNameType {
-  componentName: string;
-  setComponentName: Dispatch<SetStateAction<string>>;
-}
 
-interface CodeSnippetType {
-  codeSnippet: string;
-  setCodeSnippet: Dispatch<SetStateAction<string>>;
-}
 
 export const CodeContext = createContext<ComponentNameType | undefined>(
   undefined
@@ -80,9 +73,9 @@ const App = () => {
     folderId: number,
     item: string,
     isFolder: boolean,
-    preview: string
+    preview?: string
   ) => {
-    const finalTree: any = insertNode(
+    const finalTree: typeof explorer = insertNode(
       explorerData,
       folderId,
       item,
@@ -91,22 +84,22 @@ const App = () => {
     );
 
     setExplorerData(finalTree);
-    // setSrcApp(finalTree.items[2]);
+    
     for (let items of finalTree.items) {
       if (items.name === 'src') setSrcApp(items);
     }
   };
 
-  const handleDeleteNode = (folderId: number) => {
-    const finalTree: any = deleteNode(explorerData, folderId);
+  const handleDeleteNode = (folderId?: number) => {
+    const finalTree: typeof explorer = deleteNode(explorerData, folderId);
     setExplorerData(finalTree);
     for (let items of finalTree.items) {
       if (items.name === 'src') setSrcApp(items);
     }
   };
 
-  const handleUpdatePreview = (fileId: number, preview: string, tags: []) => {
-    const finalTree: any = updatePreview(explorerData, fileId, preview, tags);
+  const handleUpdatePreview = (fileId: number, preview: string, tags: Tag[]): typeof explorer | void => {
+    const finalTree: typeof explorer = updatePreview(explorerData, fileId, preview, tags);
 
     setExplorerData(finalTree);
   };
@@ -116,8 +109,8 @@ const App = () => {
     fileName: string,
     preview: string,
     tags: []
-  ) => {
-    const finalTree: any = initialPreview(
+  ): typeof explorer | void => {
+    const finalTree: typeof explorer = initialPreview(
       explorerData,
       folderName,
       fileName,
@@ -131,16 +124,16 @@ const App = () => {
   const handleCreateCustomEndpoint = (
     folderId: number,
     item: string,
-    isFolder: boolean
-  ) => {
-    const finalTree: any = createCustomEndpoint(
+    isFolder?: boolean
+  ): typeof explorer | void => {
+    const finalTree = createCustomEndpoint(
       explorerData,
       folderId,
       item,
       isFolder
     );
     setExplorerData(finalTree);
-    // setSrcApp(finalTree.items[2])
+   
     for (let items of finalTree.items) {
       if (items.name === 'src') setSrcApp(items);
     }
@@ -150,37 +143,36 @@ const App = () => {
     folderId: number,
     item: string,
     folderName: string,
-    preview: string,
-    tags: []
-  ) => {
-    // if (item === '') return;
+    preview?: string
+  ): typeof explorer | void => {
     const finalTree: any = insertBoilerFiles(
       explorerData,
       folderId,
       item,
       folderName,
       preview,
-      tags
     );
 
     setExplorerData(finalTree);
-    // setSrcApp(finalTree.items[2]);
+
     for (let items of finalTree.items) {
       if (items.name === 'src') setSrcApp(items);
     }
   };
 
   return (
-    <Box sx={{height: '100vh'}}>
-      <AppBar position='static' sx={{ bgcolor: 'transparent', marginBottom: '1.3%',  boxShadow:' -1px 6px 11px 0px rgba(131,99,151,0.75)' }}>
+    <Box>
+      <AppBar position='static' sx={{ bgcolor: 'transparent', marginBottom: '2%' }}>
         <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{display: 'flex' }}>
-          <img src='images/logo2.png'     style={{ width: '10%', alignSelf:'center'}}/>
+          <img src='images/nslogo.png' style={{ transform: 'rotate(30deg)', width: '10%', alignSelf: 'center', height: '60px', paddingRight: '2%', marginTop: '2%' }} />
+
 
           <Typography
+            className='logo'
             variant='h3'
             sx={{
-            fontFamily: 'Titillium Web',
+            fontFamily: 'Roboto Mono',
             // marginBottom: '0.5em',
             color: 'white',
             textShadow: '2px 2px 4px rgba(255, 255, 255, 0.5)', // Adjust shadow values as needed
@@ -196,10 +188,9 @@ const App = () => {
         </Toolbar>
       </AppBar>
 
-      <Box
+      {/* <Box
         sx={{
-        
-          height: '88vh',
+          height: '87vh',
           width: '95vw',
           marginLeft: 5,
           marginRight: 4,
@@ -209,13 +200,12 @@ const App = () => {
           borderRadius: 3,
           // bgcolor: 'rgba(255, 255, 255, 0.7)',
           // boxShadow: '7px 12px 49px -14px rgba(255,255,255,1)',
-          boxShadow: '-1px 3px 22px 0px rgba(131,99,151,0.75)',
-          backgroundColor: 'white',
-          paddingTop: '1%'
+          paddingTop: '1.3%',
+          bgcolor: 'rgba(38,38,38)',
           // border: 2,
           // borderColor: 'red',
         }}
-      > 
+      >  */}
         <CodeContext.Provider value={[componentName, setComponentName]}>
           <CodeSnippetContext.Provider value={[codeSnippet, setCodeSnippet]}>
             <AppContext.Provider
@@ -237,20 +227,21 @@ const App = () => {
               <Grid
                 container
                 sx={{
-                  height: '',
+                  height: '85vh',
+                  paddingLeft: '1.3%',
                   // border: 2,
                   // borderColor: 'blue',
-                  gap: '30px'
+                  gap: '23px'
                 }}
               >
                 <Grid
                   item
-                  sm={3}
-                  md={3}
+                  sm={4}
+                  md={3.5}
                   lg={3}
                   xl={2.5}
                   sx={{
-                    maxHeight: '86vh',
+                    maxHeight: '100%',
                     // border: 2,
                     // borderColor: 'pink',
                     paddingLeft: 1,
@@ -283,7 +274,6 @@ const App = () => {
                     handleInsertNode={handleInsertNode}
                     handleDeleteNode={handleDeleteNode}
                     handleInputBoilerFiles={handleInputBoilerFiles}
-                    handleInitialPreview={handleInitialPreview}
                     explorer={explorerData}
                     folderExpanded={folderExpanded}
                     setFolderExpanded={setFolderExpanded}
@@ -299,7 +289,7 @@ const App = () => {
                 <DndContext>
                   <Grid
                     item
-                    sm={4}
+                    sm={3.75}
                     md={4}
                     lg={4.25}
                     xl={4.5}
@@ -307,20 +297,25 @@ const App = () => {
                       // border: 2,
                       // borderColor: 'black',
                       display: 'flex',
-                      gap: '30px',
                       flexDirection: 'column',
                       justifyContent: 'space-between',
+                  
                     }}
-                  >
-                    <StaticTagsContainer />
+                  > 
+                    <Box style={{alignSelf: 'flex-start', height: '40vh'}}>
+                      <StaticTagsContainer />
+                    </Box>
+                    
                     <Box
                       sx={{
                         // border: 1,
                         // borderColor: 'lawngreen',
-                        flexGrow: 1,
-                        background: '#42464C',
+                        // flexGrow: 1,
+                        height: '45vh',
+                        background: 'transparent',
                         boxShadow: '-1px 1px 18px 0px rgba(0,0,0,0.75)',
                         borderRadius: '20px',
+                    
                       }}
                     >
                       <Tree explorer={explorerData} srcApp={srcApp} />
@@ -329,17 +324,15 @@ const App = () => {
 
                   <Grid
                     item
-                    sm={4}
+                    sm={3.75}
                     md={4}
                     lg={4.25}
                     xl={4.5}
                     sx={{
                       justifyContent: 'space-between',
+                      maxHeight: '100%',
                       display: 'flex',
                       flexDirection: 'column',
-                      // border: 2,
-                      gap: '30px',
-                      // borderColor: 'cyan',
                       
                     }}
                   >
@@ -347,12 +340,14 @@ const App = () => {
                       sx={{
                         width: '100%',
                         height: '35vh',
+                        // height: '400px',
                         // border: 2,
                         // borderColor: 'orange',
                         paddingLeft: 2,
                         paddingRight: 2,
                         boxShadow: '-1px 1px 18px 0px rgba(0,0,0,0.75)',
                         borderRadius: '20px',
+                        overflow: 'hidden',
                         
                       }}
                     >
@@ -361,7 +356,11 @@ const App = () => {
                         handleUpdatePreview={handleUpdatePreview}
                       />
                     </Box>
+
+                    <Box sx={{height: '45vh'}}>
                     <CodePreview treeData={explorerData} />
+                    </Box>
+                    
                   </Grid>
                   <DragOverlayWrapper />
                 </DndContext>
@@ -370,7 +369,7 @@ const App = () => {
           </CodeSnippetContext.Provider>
         </CodeContext.Provider>
       </Box>
-    </Box>
+    // </Box>
   );
 };
 
