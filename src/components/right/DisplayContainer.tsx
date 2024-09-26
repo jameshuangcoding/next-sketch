@@ -1,30 +1,21 @@
 import { Box, Typography } from '@mui/material';
-import {
-  DragEndEvent,
-  UniqueIdentifier,
-  useDndMonitor,
-  useDroppable,
-} from '@dnd-kit/core';
-import { useContext, useState } from 'react';
+import { DragEndEvent, useDndMonitor, useDroppable } from '@dnd-kit/core';
+import { useContext } from 'react';
 import AppContext from '../../context/AppContext';
 import { Tag } from '../../utils/interfaces';
-import { TestItem } from './TestItem';
-import { TestContainer } from './TestContainer';
-
-import { CodeSnippetContext } from '../../App';
+import { NonContainerTag } from './NonContainerTag';
+import { ContainerTag } from './ContainerTag';
 
 /**
  * @description - container for displayed tag elements
- * @parent - TabsComponent.tsx
- * @children - SortableContainer.tsx, SortableItem.tsx
+ * @parent - App.tsx
+ * @children - ContainerTag.tsx, NonContainerTag.tsx
  */
 
-const DisplayContainer = ({handleUpdatePreview, explorer}) => {
-  const { tags, setTags, currentId, update, setUpdate } = useContext(AppContext);
-  const [activeId, setActiveId] = useState<UniqueIdentifier | null>();
+const DisplayContainer = () => {
+  const { tags, setTags, setUpdate } = useContext(AppContext);
 
   const tagsWithoutParents = tags.filter((prev) => !prev.parent);
-  const [codeSnippet, setCodeSnippet] = useContext(CodeSnippetContext);
 
   const { setNodeRef, isOver } = useDroppable({
     id: 'display-container-drop-area',
@@ -33,25 +24,20 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
     },
   });
 
-  console.log('tags', tags);
-
   useDndMonitor({
-    // onDragOver: (event: DragOverEvent) => {
-    //   console.log('drag over event', event.over);
-    // },
     onDragEnd: async (event: DragEndEvent) => {
       console.log('drag end event', event);
       const { active, over } = event;
 
-      const isDraggableItem = active.data?.current?.isDraggableItem;
+      const isStaticTag = active.data?.current?.isStaticTag;
       const isDroppingOverDisplayContainerDropArea =
         over?.data?.current?.isDisplayContainerDropArea;
 
-      const droppingDraggableItemOverDisplayContainerDropArea =
-        isDraggableItem && isDroppingOverDisplayContainerDropArea;
+      const droppingStaticTagOverDisplayContainerDropArea =
+        isStaticTag && isDroppingOverDisplayContainerDropArea;
 
-      // scenario 1: dropping draggable item over display container drop area
-      if (droppingDraggableItemOverDisplayContainerDropArea) {
+      // scenario 1: dropping static tag over display container drop area
+      if (droppingStaticTagOverDisplayContainerDropArea) {
         const newTag: Tag = {
           id: active.id,
           name: active.data.current?.name,
@@ -63,32 +49,33 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
         return;
       }
 
-      const isDroppingOverTestItemTopHalf =
-        over?.data?.current?.isTopHalfTestItem;
-      const isDroppingOverTestItemBottomHalf =
-        over?.data?.current?.isBottomHalfTestItem;
+      const isDroppingOverNonContainerTagTopHalf =
+        over?.data?.current?.isTopHalfNonContainerTag;
+      const isDroppingOverNonContainerTagBottomHalf =
+        over?.data?.current?.isBottomHalfNonContainerTag;
 
-      const isDroppingOverTestItem =
-        isDroppingOverTestItemTopHalf || isDroppingOverTestItemBottomHalf;
+      const isDroppingOverNonContainerTag =
+        isDroppingOverNonContainerTagTopHalf ||
+        isDroppingOverNonContainerTagBottomHalf;
 
-      const isDroppingOverTestContainerTopArea =
-        over?.data?.current?.isTopAreaTestContainer;
-      const isDroppingOverTestContainerMiddleArea =
-        over?.data?.current?.isMiddleAreaTestContainer;
-      const isDroppingOverTestContainerBottomArea =
-        over?.data?.current?.isBottomAreaTestContainer;
+      const isDroppingOverContainerTagTopArea =
+        over?.data?.current?.isTopAreaContainerTag;
+      const isDroppingOverContainerTagMiddleArea =
+        over?.data?.current?.isMiddleAreaContainerTag;
+      const isDroppingOverContainerTagBottomArea =
+        over?.data?.current?.isBottomAreaContainerTag;
 
-      const isDroppingOverTestContainer =
-        isDroppingOverTestContainerTopArea ||
-        isDroppingOverTestContainerMiddleArea ||
-        isDroppingOverTestContainerBottomArea;
+      const isDroppingOverContainerTag =
+        isDroppingOverContainerTagTopArea ||
+        isDroppingOverContainerTagMiddleArea ||
+        isDroppingOverContainerTagBottomArea;
 
-      const droppingDraggableItemOverTestItemOrTestContainer =
-        isDraggableItem &&
-        (isDroppingOverTestItem || isDroppingOverTestContainer);
+      const droppingStaticTagOverNonContainerTagOrContainerTag =
+        isStaticTag &&
+        (isDroppingOverNonContainerTag || isDroppingOverContainerTag);
 
-      // scenario 2: dropping draggable item over a test item or container (either above or below it)
-      if (droppingDraggableItemOverTestItemOrTestContainer) {
+      // scenario 2: dropping static tag over a container or non container tag (either above or below it)
+      if (droppingStaticTagOverNonContainerTagOrContainerTag) {
         const newTag: Tag = {
           id: active.id,
           name: active.data.current?.name,
@@ -105,8 +92,8 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
 
         let indexForNewTag = overTagIndex;
         if (
-          isDroppingOverTestItemBottomHalf ||
-          isDroppingOverTestContainerBottomArea
+          isDroppingOverNonContainerTagBottomHalf ||
+          isDroppingOverContainerTagBottomArea
         ) {
           indexForNewTag = overTagIndex + 1;
         }
@@ -120,19 +107,21 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
         setUpdate(true);
       }
 
-      const isDraggingTestItem = active?.data?.current?.isTestItem;
-      const isDraggingTestContainer = active?.data?.current?.isTestContainer;
+      const isDraggingNonContainerTag =
+        active?.data?.current?.isNonContainerTag;
+      const isDraggingContainerTag = active?.data?.current?.isContainerTag;
 
-      const isDraggingTestItemOrTestContainer =
-        isDraggingTestItem || isDraggingTestContainer;
+      const isDraggingNonContainerTagOrContainerTag =
+        isDraggingNonContainerTag || isDraggingContainerTag;
 
-      const draggingTestItemOrTestContainerOverAnotherTestItemOrTestContainer =
-        isDraggingTestItemOrTestContainer &&
-        (isDroppingOverTestItem || isDroppingOverTestContainer);
+      const draggingNonContainerTagOrContainerTagOverAnotherNonContainerTagOrContainerTag =
+        isDraggingNonContainerTagOrContainerTag &&
+        (isDroppingOverNonContainerTag || isDroppingOverContainerTag);
 
-      // scenario 3: dragging test item or container over another test item or container (placement of test items once its in the display container)
-      if (draggingTestItemOrTestContainerOverAnotherTestItemOrTestContainer) {
-        // console.log('hello');
+      // scenario 3: dragging container or non container tag over another container or non container tag (placement of container or non container tags once its in the display drop area)
+      if (
+        draggingNonContainerTagOrContainerTagOverAnotherNonContainerTagOrContainerTag
+      ) {
         const activeId = active.data?.current?.tagId;
         const overId = over.data?.current?.tagId;
 
@@ -145,25 +134,23 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
 
         const activeTag = { ...tags[activeTagIndex] };
 
-        // console.log('activeTag', activeTag);
-
         // remove tag
         await setTags((prev) => prev.filter((tag) => tag.id !== activeId));
 
-        // scenario 4: dragging test item or container into a test container
-        if (isDroppingOverTestContainerMiddleArea) {
+        // scenario 4: dragging container or non container tag into a container tag
+        if (isDroppingOverContainerTagMiddleArea) {
           activeTag.parent = overId;
         }
 
         let indexForNewTag = overTagIndex;
 
-        if (isDroppingOverTestContainerTopArea) {
+        if (isDroppingOverContainerTagTopArea) {
           activeTag.parent = false;
         }
 
         if (
-          isDroppingOverTestItemBottomHalf ||
-          isDroppingOverTestContainerBottomArea
+          isDroppingOverNonContainerTagBottomHalf ||
+          isDroppingOverContainerTagBottomArea
         ) {
           indexForNewTag = overTagIndex + 1;
           activeTag.parent = false;
@@ -178,11 +165,11 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
         setUpdate(true);
       }
 
-      // scenario 5: dropping draggable item into test container middle area
-      const droppingDraggableItemOverTestContainerMiddleArea =
-        isDraggableItem && isDroppingOverTestContainerMiddleArea;
+      // scenario 5: dropping static tag into container tag middle area
+      const droppingStaticTagOverContainerTagMiddleArea =
+        isStaticTag && isDroppingOverContainerTagMiddleArea;
 
-      if (droppingDraggableItemOverTestContainerMiddleArea) {
+      if (droppingStaticTagOverContainerTagMiddleArea) {
         const newTag: Tag = {
           id: active.id,
           name: active.data.current?.name,
@@ -198,12 +185,15 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
   });
 
   return (
-    <Box>
-      <Typography variant='h6'>My Page</Typography>
+    <Box style={{ color: 'rgba(101,105,111)' }}>
+      <Typography
+        variant='h6'
+        style={{ fontSize: '2rem', paddingTop: '1.5%', paddingLeft: '1%' }}
+      >
+        My Page
+      </Typography>
       <Box
         sx={{
-          border: 2,
-          borderColor: 'magenta',
           ...(isOver && {
             borderColor: 'red',
           }),
@@ -219,7 +209,6 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
         }}
         ref={setNodeRef}
       >
-        {/* drop here text */}
         {!isOver && tags.length === 0 && (
           <Box
             sx={{
@@ -227,32 +216,19 @@ const DisplayContainer = ({handleUpdatePreview, explorer}) => {
               height: '60%',
               justifyContent: 'center',
               alignItems: 'flex-end',
+              color: 'rgba(101,105,111)',
             }}
           >
             <Typography variant='h2'>Drop Here</Typography>
           </Box>
         )}
 
-        {/* {isOver && tags.length === 0 && (
-          //
-          <Box
-            sx={{
-              display: 'flex',
-              bgcolor: 'lightgrey',
-              margin: 2.5,
-              height: 60,
-              borderRadius: 2,
-            }}
-          ></Box>
-        )} */}
-
-        {/* renders tags array */}
         {tags.length > 0 &&
           tagsWithoutParents.map((tag) => {
             if (tag.container) {
-              return <TestContainer key={tag.id} tag={tag} />;
+              return <ContainerTag key={tag.id} tag={tag} />;
             }
-            return <TestItem key={tag.id} tag={tag} />;
+            return <NonContainerTag key={tag.id} tag={tag} />;
           })}
       </Box>
     </Box>

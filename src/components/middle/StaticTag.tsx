@@ -1,5 +1,4 @@
 import { UniqueIdentifier, useDraggable } from '@dnd-kit/core';
-import { CSS } from '@dnd-kit/utilities';
 import { Button } from '@mui/material';
 import { Tag } from '../../utils/interfaces';
 
@@ -8,19 +7,19 @@ import { Tag } from '../../utils/interfaces';
  * @parent - StaticTagsContainer.tsx
  */
 
-interface DraggableItemProps {
-  id: UniqueIdentifier
+interface StaticTagProps {
+  id: UniqueIdentifier;
   children: Tag;
 }
 
-export const DraggableItem = ({ id, children }: DraggableItemProps) => {
+export const StaticTag = ({ id, children }: StaticTagProps) => {
   const { name, container, attribute } = children;
   const { attributes, listeners, setNodeRef } = useDraggable({
     id: id,
     data: {
       name: name,
       container: container,
-      isDraggableItem: true,
+      isStaticTag: true,
       attribute: attribute,
     },
   });
@@ -33,9 +32,12 @@ export const DraggableItem = ({ id, children }: DraggableItemProps) => {
       variant='contained'
       sx={{
         textAlign: 'center',
-        bgcolor: '#cbb4d4',
+        bgcolor: 'transparent',
+        border: '2px solid #6441A5',
+        color: 'white',
         // color: 'white',
         // border: 1,
+        opacity: '0.9',
         fontWeight: 'bolder',
         fontSize: 15,
         margin: 0.8,
@@ -53,16 +55,16 @@ export const DraggableItem = ({ id, children }: DraggableItemProps) => {
         },
       }}
     >
-      {children.name}
+      {name}
     </Button>
   );
 };
 
-interface DraggableItemOverlayProps {
-  children: string
+interface StaticTagOverlayProps {
+  children: string;
 }
 
-export const DraggableItemOverlay = ({ children }: DraggableItemOverlayProps) => {
+export const StaticTagOverlay = ({ children }: StaticTagOverlayProps) => {
   return (
     <Button
       variant='contained'

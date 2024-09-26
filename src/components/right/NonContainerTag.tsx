@@ -10,16 +10,16 @@ export const Item = ({ children }: ItemProps) => {
   return <Box>{children}</Box>;
 };
 
-interface TestItemProps {
+interface NonContainerTagProps {
   tag: Tag;
 }
 
-export const TestItem = ({ tag }: TestItemProps) => {
+export const NonContainerTag = ({ tag }: NonContainerTagProps) => {
   const topHalf = useDroppable({
     id: tag.id + '-item-top',
     data: {
       tagId: tag.id,
-      isTopHalfTestItem: true,
+      isTopHalfNonContainerTag: true,
     },
   });
 
@@ -27,7 +27,7 @@ export const TestItem = ({ tag }: TestItemProps) => {
     id: tag.id + '-item-bottom',
     data: {
       tagId: tag.id,
-      isBottomHalfTestItem: true,
+      isBottomHalfNonContainerTag: true,
     },
   });
 
@@ -35,7 +35,7 @@ export const TestItem = ({ tag }: TestItemProps) => {
     id: tag.id + '-item-drag-handler',
     data: {
       tagId: tag.id,
-      isTestItem: true,
+      isNonContainerTag: true,
     },
   });
 
@@ -51,14 +51,17 @@ export const TestItem = ({ tag }: TestItemProps) => {
         display: 'flex',
         alignItems: 'flex-start',
         justifyContent: 'center',
-        bgcolor: 'lightgrey',
-        color: 'black',
+        bgcolor: 'transparent',
+        color: 'rgba(229, 63, 115)',
         margin: 2.5,
+        fontSize: '1.4rem',
+        fontWeight: 'bolder',
         height: 35,
         width: '90%',
         borderRadius: 2,
         border: 2,
-        borderColor: 'red',
+        borderColor: '#6441A5',
+        paddingBottom: '5%',
       }}
     >
       <Box
@@ -68,7 +71,6 @@ export const TestItem = ({ tag }: TestItemProps) => {
           width: '100%',
           height: '50%',
           top: -25,
-          //   bgcolor: 'green', // a
         }}
       />
 
@@ -79,7 +81,6 @@ export const TestItem = ({ tag }: TestItemProps) => {
           width: '100%',
           height: '50%',
           bottom: -20,
-          // bgcolor: 'red', // b
         }}
       />
       <Box />
@@ -110,11 +111,11 @@ export const TestItem = ({ tag }: TestItemProps) => {
   );
 };
 
-interface TestItemOverlay {
+interface NonContainerTagOverlay {
   tag: Tag;
 }
 
-export const TestItemOverlay = ({ tag }: TestItemOverlay) => {
+export const NonContainerTagOverlay = ({ tag }: NonContainerTagOverlay) => {
   return (
     <Box
       sx={{
